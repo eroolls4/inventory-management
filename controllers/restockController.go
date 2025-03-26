@@ -17,19 +17,22 @@ func NewRestockController(service *services.RestockService) *RestockController {
 
 func (c *RestockController) RestockItem(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
-	var request struct {
+	var requestDTO struct {
 		Amount int `json:"amount"`
 	}
-	if err := ctx.ShouldBindJSON(&request); err != nil {
+	if err := ctx.ShouldBindJSON(&requestDTO); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	item, err := c.Service.RestockItem(id, request.Amount)
+	item, err := c.Service.RestockItem(id, requestDTO.Amount)
 	if err != nil {
-		if err.Error() == "restock amount must be between 10 and 1000" {
+		switch err.Error() {
+		case "restock amount must be between 10 and 1000":
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		} else {
+		case "rate limit exceeded: max 3 restocks per 24 hours":
+			ctx.JSON(http.StatusTooManyRequests, gin.H{"error": err.Error()})
+		default:
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to restock item"})
 		}
 		return

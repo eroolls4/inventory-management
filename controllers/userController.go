@@ -12,7 +12,6 @@ import (
 )
 
 func Signup(c *gin.Context) {
-	//get email and psw from user
 	var body struct {
 		Email    string
 		Password string
@@ -49,8 +48,6 @@ func Signup(c *gin.Context) {
 
 	}
 
-	//respond
-
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User successfully created",
 		"email":   body.Email,
@@ -63,7 +60,6 @@ func Login(c *gin.Context) {
 		Password string
 	}
 
-	// Correct way to bind JSON body
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to read body",
@@ -89,7 +85,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.ID,
 		"exp": time.Now().Add(time.Hour * 72 * 30).Unix(),

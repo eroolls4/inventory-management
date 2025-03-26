@@ -13,6 +13,7 @@ import (
 func init() {
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDb()
+	initializers.ConnectToRedis()
 	initializers.SyncDatabase()
 }
 
@@ -46,13 +47,13 @@ func main() {
 	// Protected API routes
 	api := router.Group("/api").Use(middleware.RequireAuth)
 	{
-		api.POST("/inventory", inventoryController.CreateInventory)
 		api.GET("/inventory/:id", inventoryController.GetInventory)
+		api.POST("/inventory", inventoryController.CreateInventory)
 		api.PUT("/inventory/:id", inventoryController.UpdateInventory)
 		api.DELETE("/inventory/:id", inventoryController.DeleteInventory)
 
-		api.POST("/items", itemController.CreateItem)
 		api.GET("/items/:id", itemController.GetItem)
+		api.POST("/items", itemController.CreateItem)
 		api.PUT("/items/:id", itemController.UpdateItem)
 		api.DELETE("/items/:id", itemController.DeleteItem)
 
