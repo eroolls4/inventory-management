@@ -46,3 +46,7 @@ func (s *ItemService) Delete(id int) error {
 func (s *ItemService) GetAll() ([]models.Item, error) {
 	return s.Repo.FindAll()
 }
+
+func (s *ItemService) GetLowQuantityItems(threshold int) ([]models.Item, error) {
+    return s.Repo.FindLowQuantityItems(threshold)
+}

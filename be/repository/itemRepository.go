@@ -36,3 +36,9 @@ func (r *ItemRepository) FindAll() ([]models.Item, error) {
 	err := r.DB.Preload("Inventory").Find(&items).Error
 	return items, err
 }
+
+func (r *ItemRepository) FindLowQuantityItems(threshold int) ([]models.Item, error) {
+    var items []models.Item
+    err := r.DB.Where("quantity < ?", threshold).Find(&items).Error
+    return items, err
+}

@@ -72,3 +72,13 @@ func (c *ItemController) GetAllItems(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, items)
 }
+
+func (c *ItemController) GetLowQuantityItems(ctx *gin.Context) {
+    const threshold = 20
+    items, err := c.Service.GetLowQuantityItems(threshold)
+    if err != nil {
+        ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch low quantity items"})
+        return
+    }
+    ctx.JSON(http.StatusOK, items)
+}

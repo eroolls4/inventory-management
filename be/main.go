@@ -20,8 +20,6 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Hello World")
-
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -69,7 +67,7 @@ func main() {
 		api.DELETE("/items/:id", itemController.DeleteItem)
 
 		api.POST("/items/:id/restock", restockController.RestockItem)
-
+        api.GET("/items/low-quantity", itemController.GetLowQuantityItems)
 		api.GET("/items", itemController.GetAllItems)
 		api.GET("/inventory", inventoryController.GetAllInventories)
 		api.GET("/items/:id/restock-history", restockController.GetRestockHistory)
