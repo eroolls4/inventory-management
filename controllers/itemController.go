@@ -63,3 +63,12 @@ func (c *ItemController) DeleteItem(ctx *gin.Context) {
 	}
 	ctx.Status(http.StatusNoContent)
 }
+
+func (c *ItemController) GetAllItems(ctx *gin.Context) {
+	items, err := c.Service.GetAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch items"})
+		return
+	}
+	ctx.JSON(http.StatusOK, items)
+}

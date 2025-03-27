@@ -30,3 +30,9 @@ func (r *InventoryRepository) Update(inventory *models.Inventory) error {
 func (r *InventoryRepository) Delete(id int) error {
 	return r.DB.Delete(&models.Inventory{}, id).Error
 }
+
+func (r *InventoryRepository) FindAll() ([]models.Inventory, error) {
+	var inventories []models.Inventory
+	err := r.DB.Find(&inventories).Error
+	return inventories, err
+}

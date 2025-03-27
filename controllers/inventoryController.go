@@ -63,3 +63,12 @@ func (c *InventoryController) DeleteInventory(ctx *gin.Context) {
 	}
 	ctx.Status(http.StatusNoContent)
 }
+
+func (ic *InventoryController) GetAllInventories(c *gin.Context) {
+	inventories, err := ic.Service.GetAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch inventories"})
+		return
+	}
+	c.JSON(http.StatusOK, inventories)
+}

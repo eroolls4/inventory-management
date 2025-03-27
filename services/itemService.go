@@ -42,3 +42,7 @@ func (s *ItemService) Update(id int, updatedItem *models.Item) (*models.Item, er
 func (s *ItemService) Delete(id int) error {
 	return s.Repo.Delete(id)
 }
+
+func (s *ItemService) GetAll() ([]models.Item, error) {
+	return s.Repo.FindAll()
+}

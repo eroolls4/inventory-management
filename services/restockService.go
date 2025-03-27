@@ -72,3 +72,7 @@ func (s *RestockService) RestockItem(itemID int, amount int) (*models.Item, erro
 
 	return &item, nil
 }
+
+func (s *RestockService) GetRestockHistory(itemID int) ([]models.RestockHistory, error) {
+	return s.RestockRepo.FindByItemID(itemID)
+}

@@ -22,3 +22,9 @@ func (r *RestockRepository) FindByID(id int) (models.RestockHistory, error) {
 	err := r.DB.First(&restock, id).Error
 	return restock, err
 }
+
+func (r *RestockRepository) FindByItemID(itemID int) ([]models.RestockHistory, error) {
+	var history []models.RestockHistory
+	err := r.DB.Where("item_id = ?", itemID).Find(&history).Error
+	return history, err
+}

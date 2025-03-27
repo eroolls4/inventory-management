@@ -39,3 +39,13 @@ func (c *RestockController) RestockItem(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, item)
 }
+
+func (c *RestockController) GetRestockHistory(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	history, err := c.Service.GetRestockHistory(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch restock history"})
+		return
+	}
+	ctx.JSON(http.StatusOK, history)
+}

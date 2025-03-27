@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"inventory-management/controllers"
 	"inventory-management/initializers"
 	"inventory-management/middleware"
 	"inventory-management/repository"
 	"inventory-management/services"
+	"time"
 )
 
 func init() {
@@ -21,6 +23,15 @@ func main() {
 	fmt.Println("Hello World")
 
 	router := gin.Default()
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           30 * time.Hour,
+	}))
 	db := initializers.DB
 
 	// Repositories
@@ -58,6 +69,10 @@ func main() {
 		api.DELETE("/items/:id", itemController.DeleteItem)
 
 		api.POST("/items/:id/restock", restockController.RestockItem)
+
+		api.GET("/items", itemController.GetAllItems)
+		api.GET("/inventory", inventoryController.GetAllInventories)
+		api.GET("/items/:id/restock-history", restockController.GetRestockHistory)
 	}
 
 	router.Run()

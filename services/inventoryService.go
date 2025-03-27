@@ -40,3 +40,7 @@ func (s *InventoryService) Update(id int, updatedInventory *models.Inventory) (*
 func (s *InventoryService) Delete(id int) error {
 	return s.Repo.Delete(id)
 }
+
+func (s *InventoryService) GetAll() ([]models.Inventory, error) {
+	return s.Repo.FindAll()
+}
